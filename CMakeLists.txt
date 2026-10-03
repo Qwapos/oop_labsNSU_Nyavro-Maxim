@@ -14,4 +14,8 @@ include_directories(oop)
 add_executable(oop_labsNSU_Nyavro_Maxim
         oop/main.cpp
         oop/wordCounter.cpp
-        oop/wordCounter.h)
+        oop/wordCounter.h
+        oop/FileReader.cpp
+        oop/FileReader.h
+        oop/CSVWriter.cpp
+        oop/CSVWriter.h)

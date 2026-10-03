@@ -1,51 +1,44 @@
 #include "wordCounter.h"
-#include <fstream>
-#include <iostream>
 #include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace {
-    bool cmp(const std::pair<std::string, long long> &a,
-             const std::pair<std::string, long long> &b) {
-        if (a.second < b.second) {
-            return false;
-        }
-        if (a.second == b.second) {
-            return a.first < b.first;
-        }
-        return true;
-    }
-}
-
-WordCounter::WordCounter(const std::string &sourceFileName)
+namespace
 {
-    std::ifstream fin(sourceFileName);
-    if (!fin.is_open())
+    bool cmp(const std::pair<std::string, long long>& a,
+             const std::pair<std::string, long long>& b)
     {
-        throw std::runtime_error("can't open input file: " + sourceFileName);
-    }
-    std::string element;
-    while (fin >> element) {
-        words[element]++;
-        wordsCount++;
-    }
-    if (wordsCount == 0) {
-        throw std::runtime_error("input file is empty: " + sourceFileName);;
+        if (a.second != b.second)
+        {
+            return a.second > b.second;
+        }
+        return a.first < b.first;
     }
 }
 
-void WordCounter::sentToFile(const std::string &outputFileName) const {
-    std::vector<std::pair<std::string, long long> > sorted(words.begin(), words.end());
-    std::sort(sorted.begin(), sorted.end(), cmp);
-    std::ofstream fout(outputFileName);
-    if (!fout.is_open())
+
+void WordCounter::addWord(const std::string& word)
+{
+    words[word]++;
+    totalWords++;
+}
+
+std::vector<std::pair<std::string, long long>> WordCounter::getSorted() const
+{
+    std::vector<std::pair<std::string, long long>> result;
+
+    result.reserve(words.size());
+
+    for (const auto& word : words)
     {
-        throw std::runtime_error("can't open output file: " + outputFileName);
+        result.emplace_back(word.first, word.second);
     }
-    for (auto &it: sorted) {
-        const double FREQ = static_cast<double>(it.second) * 100.0 / static_cast<double>(wordsCount);
-        fout << it.first << "," << it.second << "," << FREQ << "\n";
-    }
+    std::sort(result.begin(), result.end(), cmp);
+    return result;
+}
+
+long long WordCounter::getTotal() const
+{
+    return totalWords;
 }
