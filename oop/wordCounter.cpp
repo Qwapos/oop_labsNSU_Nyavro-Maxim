@@ -4,20 +4,6 @@
 #include <utility>
 #include <vector>
 
-namespace
-{
-    bool cmp(const std::pair<std::string, long long>& a,
-             const std::pair<std::string, long long>& b)
-    {
-        if (a.second != b.second)
-        {
-            return a.second > b.second;
-        }
-        return a.first < b.first;
-    }
-}
-
-
 void WordCounter::addWord(const std::string& word)
 {
     words[word]++;
@@ -34,7 +20,13 @@ std::vector<std::pair<std::string, long long>> WordCounter::getSorted() const
     {
         result.emplace_back(word.first, word.second);
     }
-    std::sort(result.begin(), result.end(), cmp);
+    std::sort(result.begin(), result.end(),
+              [](const auto& a, const auto& b) {
+                  if (a.second != b.second) {
+                      return a.second > b.second;
+                  }
+                  return a.first < b.first;
+              });
     return result;
 }
 

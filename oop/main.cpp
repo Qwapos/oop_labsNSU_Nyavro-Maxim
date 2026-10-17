@@ -2,20 +2,29 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <cstddef>
 #include "wordCounter.h"
 #include "FileReader.h"
 #include "CSVWriter.h"
 
+constexpr std::size_t REQUIRED_ARG_COUNT = 3;
+constexpr std::size_t INPUT_FILE_ARG_INDEX = 1;
+constexpr std::size_t OUTPUT_FILE_ARG_INDEX = 2;
+
+
+
 int main(int argc, char *argv[]) {
-    std::vector<std::string> args(argv, argv + argc); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-    if (args.size() < 3) {
-        std::cout << "wrong number of arguments" << "\n";
+    auto *begin = argv;
+    auto *end = begin + argc; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    std::vector<std::string> args(begin, end);
+    if (args.size() < REQUIRED_ARG_COUNT) {
+        std::cerr << "error: wrong number of arguments" << "\n";
         return 1;
     }
     try {
-        FileReader reader(args[1]);
+        FileReader reader(args.at(INPUT_FILE_ARG_INDEX));
         WordCounter counter;
-        CSVWriter writer(args[2]);
+        CSVWriter writer(args.at(OUTPUT_FILE_ARG_INDEX));
         std::string word;
         while (reader.readWord(word))
         {
