@@ -1,5 +1,6 @@
 #include "FileReader.h"
 #include <fstream>
+#include <stdexcept>
 #include <string>
 #include <cctype>
 
@@ -17,19 +18,18 @@ FileReader::FileReader(const std::string& sourceFileName)
 bool FileReader::readWord(std::string& word)
 {
     word.clear();
-    bool flag = false;
     char c = 0;
-    while (fin >> c)
+    while (fin.get(c))
     {
-        if (isalnum(c) != 0)
+        const auto UC = static_cast<unsigned char> (c);
+        if (std::isalnum(UC) != 0)
         {
             word.push_back(c);
-            flag = true;
         }
-        else if (flag)
+        else if (!word.empty())
         {
             break;
         }
     }
-    return flag;
+    return !word.empty();
 }

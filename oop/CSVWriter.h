@@ -7,13 +7,14 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <utility>
+#include "wordFrequency.h"
+
 
 class CSVWriter
 {
 public:
     explicit CSVWriter(const std::string& filename);
-    void writeCSV(const std::vector<std::pair<std::string, long long>>& data, long long totalWords);
+    void writeCSV(const std::vector<WordFrequency>& data);
 private:
     std::ofstream fout;
 };

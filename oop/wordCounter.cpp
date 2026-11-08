@@ -1,4 +1,5 @@
 #include "wordCounter.h"
+#include "wordFrequency.h"
 #include <algorithm>
 #include <string>
 #include <utility>
@@ -10,27 +11,21 @@ void WordCounter::addWord(const std::string& word)
     totalWords++;
 }
 
-std::vector<std::pair<std::string, long long>> WordCounter::getSorted() const
+std::vector<WordFrequency> WordCounter::getFrequencies() const
 {
-    std::vector<std::pair<std::string, long long>> result;
-
+    std::vector<WordFrequency> result;
     result.reserve(words.size());
-
     for (const auto& word : words)
     {
-        result.emplace_back(word.first, word.second);
+        const auto PERCENT = static_cast<double>(word.second) * 100.0 / static_cast<double>(totalWords);
+        result.push_back({word.first, word.second, PERCENT});
     }
     std::sort(result.begin(), result.end(),
               [](const auto& a, const auto& b) {
-                  if (a.second != b.second) {
-                      return a.second > b.second;
+                  if (a.count != b.count) {
+                      return a.count > b.count;
                   }
-                  return a.first < b.first;
+                  return a.word < b.word;
               });
     return result;
-}
-
-long long WordCounter::getTotal() const
-{
-    return totalWords;
 }

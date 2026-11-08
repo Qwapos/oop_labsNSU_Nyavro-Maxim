@@ -4,12 +4,12 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include "wordFrequency.h"
 
 class WordCounter {
 public:
     void addWord(const std::string& word);
-    std::vector<std::pair<std::string, long long>> getSorted() const;
-    long long getTotal() const;
+    std::vector<WordFrequency> getFrequencies() const;
 private:
     std::map<std::string, long long> words;
     long long totalWords = 0;

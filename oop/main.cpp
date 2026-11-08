@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
         {
             counter.addWord(word);
         }
-        writer.writeCSV(counter.getSorted(), counter.getTotal());
+        writer.writeCSV(counter.getFrequencies());
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';
         return 1;
