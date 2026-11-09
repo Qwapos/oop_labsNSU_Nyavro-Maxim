@@ -29,3 +29,5 @@ CheckOptions:
   readability-identifier-naming.ParameterCase: camelBack
   readability-identifier-naming.ConstantCase: UPPER_CASE
   readability-identifier-naming.NamespaceCase: lower_case
+  # Имена из обязательного интерфейса лабы (snake_case по заданию).
+  readability-identifier-naming.FunctionIgnoredRegexp: 'prefix_count|words_with_prefix'
